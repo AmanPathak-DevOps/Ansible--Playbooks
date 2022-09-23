@@ -1,0 +1,11 @@
+--- # Creating VPC
+- hosts: localhost
+  connection: local
+  tasks: 
+    - name: create VPC
+      ec2_vpc_net:
+        name: My-VPC
+        cidr_block: 10.0.0.0/24
+        region: us-east-1
+        state: present
+

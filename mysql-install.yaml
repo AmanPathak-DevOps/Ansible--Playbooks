@@ -1,0 +1,16 @@
+--- # Installing Mysql and Start the service
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+
+  vars: 
+       pkg: mysql-server
+       pkg2: mysql
+  tasks:
+    - name: Installing Mysql
+      action: apt name='{{pkg}}' state=present
+      notify: stop Mysql service
+  handlers: 
+    - name: stop Mysql service
+      action: service name='{{pkg2}}' state=stopped

@@ -1,0 +1,17 @@
+--- # writing the yaml script to launch EC2 instance on aws
+- name: ec2 launching
+  hosts: localhost
+  connection: local
+  tasks: 
+    - name: launching ec2
+      ec2:
+        instance_type: t2.micro
+        instance_tags:
+            Name: Ansible-T2
+        key_name: Aman-Pathak
+        region: us-east-1
+        image: ami-05fa00d4c63e32376
+        group: default
+        vpc_subnet_id: subnet-0ebe3c32191bdad68 
+        wait: yes
+        assign_public_ip: yes 

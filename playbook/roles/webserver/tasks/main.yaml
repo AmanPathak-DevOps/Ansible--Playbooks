@@ -1,0 +1,7 @@
+- name: install tree on Debian
+  apt: pkg=tree state=present
+  when: ansible_os_family == "Debian"
+- name: installing tree on RedHat
+  yum: pkg=tree state=present
+  when: ansible_os_family == "RedHat"
+

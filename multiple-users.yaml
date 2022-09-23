@@ -1,0 +1,14 @@
+--- # Multiple Users creating
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+
+  tasks: 
+      - name: Adding Users
+        user: name='{{item}}' state=present
+        with_items:
+          - rajat
+          - provider
+          - patidar
+          - truesm

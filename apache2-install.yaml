@@ -1,0 +1,9 @@
+--- # Installing Apache2 on Node 1 and Node 2
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+
+  tasks:
+    - name: installing apache2
+      action: apt name=apache2 state=present

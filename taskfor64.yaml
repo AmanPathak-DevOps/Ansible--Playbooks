@@ -1,0 +1,9 @@
+--- # Uninstall apach2 from 84.64 Node1
+- hosts: demo[0]
+  user: ansible
+  become: yes
+  connection: ssh
+  
+  tasks:
+    - name: uninstall apache2
+      action: apt name=apache2 state=absent

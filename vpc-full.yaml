@@ -1,0 +1,36 @@
+--- # Creating VPC, Subnet, Internet Gateway and Route Table
+- hosts: localhost
+  connection: local
+  tasks: 
+    - ec2_vpc_net:
+        name: Aman-VPC
+        state: present
+        cidr_block: 10.0.0.0/16
+        region: us-east-1
+        resource_tags:
+          Name: Aman-VPC
+        subnets: 
+          - cidr: 10.0.1.0/24
+            az: us-east-1a
+            resource_tags:
+              Name: Subnet-1A
+          - cidr: 10.0.2.0/24
+            az: us-east-1b
+            resource_tags:
+              Name: Subnet-2A
+          - cidr_block: 10.0.3.0/24
+            az: us-east-1c
+            resource_tags:
+              Name: Subnet-3A
+        internet_gateway: True
+        route_tables:
+            - subnets:
+              - 10.0.1.0/24
+              - 10.0.2.0/24
+              - 10.0.3.0/24
+            - routes:
+              - dest: 0.0.0.0/0
+                gw: igw
+              resource_tags:
+                Name: RT-Aman
+           

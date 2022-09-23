@@ -1,0 +1,8 @@
+--- # Creating Internet Gateway
+- hosts: localhost
+  connection: local
+  tasks: 
+    - name: Internet Gateway
+      amazon.aws.ec2_vpc_igw:
+        vpc_id: vpc-055b5c9504c2da954
+        state: present

@@ -1,0 +1,17 @@
+--- # Stop and Remove Mysql Service
+- hosts: demo[0:1]
+  user: ansible
+  become: yes
+  connection: ssh
+
+  vars:
+        pkg: mysql-server
+        pkg2: mysql
+
+  tasks: 
+      - name: Stop Mysql
+        action: service name='{{pkg2}}' state=stopped
+        notify: Removing Service
+  handlers:
+      - name: Removing Service
+        action: apt name='{{pkg}}' state=absent

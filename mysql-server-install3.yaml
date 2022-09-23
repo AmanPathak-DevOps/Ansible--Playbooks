@@ -1,0 +1,17 @@
+--- # Installing MySQL on different OS
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+
+  tasks:
+    - name: Installing MySQL on Debian OS
+      command: apt-get -y install apache2
+      when: ansible_os_family == "Debian"
+    - name: Installing MySQL on Amazon Linux
+      command: "{{ item }} "
+      with_items:
+      - sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y
+      - sudo yum -y install mysql-community-server
+      - sudo systemctl enable --now mysqld
+      when: ansible_os_family == "RedHat"

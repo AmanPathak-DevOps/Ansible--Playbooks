@@ -1,0 +1,11 @@
+--- # Creating VPC with Subnet
+- hosts: localhost
+  connection: local
+  tasks: 
+    - name: launching VPC and Subnet
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "vpc-055b5c9504c2da954"
+        cidr: 172.31.64.0/20
+        region: us-east-1
+        map_public: yes

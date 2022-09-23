@@ -1,0 +1,10 @@
+--- # Installing net-tools
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+
+  tasks:
+    - action: apt name=net-tools state=present 
+   
+

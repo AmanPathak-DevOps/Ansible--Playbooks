@@ -1,0 +1,49 @@
+--- # Installing httpd and php 
+ - hosts: all
+   user: ansible
+   become: yes
+   connection: ssh
+
+   tasks:
+    - name: Installing httpd
+      command: apt install apache2 -y
+      when: ansible_os_family == "Debian"
+
+    - name: Installing httpd
+      command: yum install httpd -y
+      when: ansible_os_family == "RedHat"
+         
+    - name: Restarting the httpd
+      command: systemctl start apache2
+      when: ansible_os_family == "Debian"
+
+    - name: Restarting the httpd
+      command: systemctl start httpd
+      when: ansible_os_family == "RedHat"
+
+    - name: Installing php and php-mysql
+      ignore_errors: yes
+      command: "{{ item }}"
+      with_items:
+       - apt install php -y
+       - apt install php-mysql -y
+      when: ansible_os_family == "Debian"
+
+    - name: Installing php and php-mysql
+      ignore_errors: yes
+      command: "{{ item }}"
+      with_items:
+       - yum install php -y
+       - yum install php-mysql -y
+      when: ansible_os_family == "RedHat"  
+
+    - name: Copy the php file
+      copy: src=/home/ansible/phpinfo.php dest=/var/www/html
+
+    - name: Restarting the apache2 server
+      command: systemctl restart apache2
+      when: ansible_os_family == "Debian"
+
+    - name: Restarting the apache2 server
+      command: systemctl restart apache2
+      when: ansible_os_family == "Debian"

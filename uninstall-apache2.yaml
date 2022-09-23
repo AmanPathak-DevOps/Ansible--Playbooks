@@ -1,0 +1,17 @@
+--- # Uninstalling Apache2 from both Nodes
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+
+  vars:
+    - pkg: apache2
+
+  tasks:
+    - name: Uninstalling Apache2
+      action: service name='{{pkg}}' state=stopped
+      notify: stop Apache2
+
+  handlers:
+    - name: stop Apache2
+      action: apt name='{{pkg}}' state=absent

@@ -1,0 +1,10 @@
+--- # Uninstalling Nginx for 84.64 Node1
+- hosts: demo[0:1]
+  user: ansible
+  become: yes
+  connection: ssh
+
+  tasks:
+    - name: uninstalling nginx
+      action: apt name=nginx state=absent
+

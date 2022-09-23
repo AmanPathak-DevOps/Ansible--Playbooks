@@ -1,0 +1,12 @@
+--- # Installing Tree using Variable
+- hosts: demo
+  user: ansible
+  become: yes
+  connection: ssh
+
+  vars:
+       pkg: tree
+
+  tasks:
+      - name: Installing Tree using Variable
+        action: apt name="{{pkg}}" state=present

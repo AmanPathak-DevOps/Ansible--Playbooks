@@ -1,0 +1,8 @@
+--- # Terminating the Launched Instance
+- hosts: localhost
+  connection: local
+  tasks: 
+    - name: Terminate Previous Instance
+      amazon.aws.ec2:
+        state: absent
+        instance_ids: i-097c131dbc0e54655,i-0c2ccb01864840f71
