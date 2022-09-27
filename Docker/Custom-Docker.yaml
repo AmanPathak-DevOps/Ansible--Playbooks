@@ -1,0 +1,57 @@
+---
+- hosts: ubuntu20
+  become: true
+  vars:  
+    container_count: 4
+    default_container_name: docker
+    default_container_image: avian19/corona
+    default_container_command: sleep 1d
+
+  tasks: 
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+    - name: Install required pacakges
+      apt: 
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: present  
+        update_cache: true
+
+    - name: Add Docker GPG apt Key
+      apt_key: 
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      package:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Pusing Files to Nodes
+      copy: src=/home/ansible/Apache-Dockerfile dest=/home/ubuntu
+
+    - name: Creating an Image and Running the docker container
+      command: "{{item}}"
+      with_items:
+      - docker build --tag apache:latest /home/ubuntu/Apache-Dockerfile/2127_little_fashion_apache
+      - docker run -itd -p 80:80 apache:latest
+
