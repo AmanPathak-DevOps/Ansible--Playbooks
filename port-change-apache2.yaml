@@ -1,0 +1,22 @@
+---
+  - hosts: Debian
+    become: yes
+    tasks:
+      - name: install apache2
+        apt: name=apache2 update_cache=yes state=latest
+
+      - name: enabled mod_rewrite
+        apache2_module: name=rewrite state=present
+      
+      - name: sending files to the nodes
+        copy: src=/home/ansible/2131_wedding_lite/ dest=/var/www/html
+
+      - name: apache2 listen on port 84
+        lineinfile: dest=/etc/apache2/ports.conf regexp="^Listen 80" line="Listen 84" state=present
+
+      - name: apache2 virtualhost on port 84
+        lineinfile: dest=/etc/apache2/sites-available/000-default.conf regexp="^<VirtualHost \*:80>" line="<VirtualHost *:84>" state=present
+
+      - name: restart apache2
+        service: name=apache2 state=restarted
+
