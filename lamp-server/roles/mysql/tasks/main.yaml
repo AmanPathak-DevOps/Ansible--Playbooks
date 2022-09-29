@@ -1,0 +1,32 @@
+- name: Add the repo for Mysql 5.6
+  become: yes
+  command: add-apt-repository 'deb http://archive.ubuntu.com/ubuntu trusty universe'
+
+- name: Update
+  become: true
+  command: apt update
+
+- name: Install mysql
+  apt: pkg={{ item }} state=present
+  become: true
+  with_items: 
+  - mysql-server-8.0
+  - mysql-client-8.0
+  - python3-mysqldb
+  - libmysqlclient-dev
+
+- name: Ensure mysql started 
+  become: yes
+  service: name=mysql state=started enabled=yes
+
+- name: Updating password  
+  mysql_user: name=root 
+              host={{ item }} 
+              password={{ mysql_root_password }}
+              login_user=root
+              login_password=""
+              state=present
+  with_items:
+  - 127.0.0.1
+  - ::1
+  - localhost

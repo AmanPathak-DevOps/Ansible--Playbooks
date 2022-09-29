@@ -1,0 +1,18 @@
+---
+- hosts: ubuntulatest
+  become: true
+  ignore_errors: yes
+  gather_facts: false
+  pre_tasks: 
+  - name: Install python2 for ansible
+    apt: pkg=python2 state=present
+    register: output
+    changed_when: output.stdout != ""
+  - name: Gathering facts
+    setup: 
+  roles:
+    - apache2
+    - mysql
+    - php      
+  vars: 
+    mysql_root_password: "mypass" 

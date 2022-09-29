@@ -1,0 +1,25 @@
+---
+- name: Install apache2 web server
+  become: true
+  apt: pkg={{ item }} state=present update_cache=true
+  with_items:
+  - apache2
+
+- name: Enable apache2 modules
+  become: yes
+  ignore_errors: yes
+  command: a2enmod rewrite actions alias fastcgi proxy_fcgi
+
+- name: Removing existing index.html files
+  become: yes
+  ignore_errors: yes
+  command: rm /var/www/html/index.html
+
+- name: Uploading own file
+  become: yes
+  copy: src=files/index.php dest=/var/www/html mode=0644
+
+- name: Restart apache2
+  become: yes
+  service: name=apache2 state=restarted
+
