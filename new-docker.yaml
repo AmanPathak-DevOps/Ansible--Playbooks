@@ -1,0 +1,21 @@
+---
+- hosts: ubuntu20
+  become: true
+  tasks:
+    - name: Copying files
+      copy: src=/home/ansible/NodeJS-Dockerfile dest=/home/ansible/
+      
+    - name: Creating Images
+      docker_image:
+         name: nodejs
+         source: build
+         build:
+           path: /home/ansible/NodeJS-Dockerfile/nodejs-api
+         state: present
+
+    - name: Run the Container
+      docker_container: 
+        image: nodejs:latest
+        name: nodejs
+        state: started
+        ports: "3005:3000"
