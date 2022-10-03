@@ -1,0 +1,1 @@
+demo ansible_host=100.25.216.97 ansible_user=ubuntu ansible_ssh_private_key_file=/home/sohamvalsangkar/Downloads/soham-Devops.pem
