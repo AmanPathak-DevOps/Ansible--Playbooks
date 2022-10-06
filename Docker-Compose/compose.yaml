@@ -1,0 +1,50 @@
+--- # Installing Docker compose
+- hosts: ubuntu20
+  become: true
+  tasks:
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+      
+    - name: Downloading the Docker-Compose Repo
+      apt: 
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Add Docker GPG apt Key
+      apt_key: 
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      package:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Add "ansible_ubuntu_demo" user to "docker" group
+      remote_user: ansible
+      user:
+        name: "ansible"
+        group: "docker"
+        append: yes
+
+
+    - name: Install docker-compose from official github repo
+      remote_user: ansible
+      get_url:
+        url : https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'  
+
