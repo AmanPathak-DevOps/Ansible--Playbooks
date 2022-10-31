@@ -1,0 +1,15 @@
+---
+- hosts: all
+  user: ansible
+  become: true
+  connection: ssh
+  tasks: 
+    - name: Copying files
+      copy:
+        src: angular
+        dest: /home/ansible
+    - name: Run the docker Compose stack
+      community.docker.docker_compose:
+        project_src: /home/ansible/angular
+        build: true
+      register: output
