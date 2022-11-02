@@ -1,0 +1,34 @@
+--- # Setting Up the Jenkins Server on Ubuntu 20.04
+- name: Gathering_Facts
+  hosts: ubuntu20
+  user: ansible
+  become: true
+  connection: ssh
+  ignore_errors: yes
+  tasks: 
+  - name: Updating the Packages of Ubuntu Machine
+    apt: 
+      name: '*'
+      state: latest
+
+  - name: Adding the Jenkins Repository 
+    apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+
+  - name: Ensuring the repository is configured
+    apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+
+  - name: Installing openjdk for jenkins
+    apt:
+      name: default-jdk
+      state: present 
+
+  - name: Ensure jenkins is installed
+    apt:
+      name: jenkins
+      update_cache: yes
+      state: present
+
+  - name: Service Starting
+    service:
+        name: jenkins 
+        state: started
